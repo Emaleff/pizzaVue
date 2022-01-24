@@ -7,6 +7,8 @@
       :summPrice="summPrice"
       @cartClose="cartClose"
       @deleteItem="deleteItem"
+      @minusCount="minusCount"
+      @plusCount="plusCount"
     />
     <Main />
     <Products
@@ -67,6 +69,7 @@ export default {
         img: "pizza1",
         hit: false,
         price: 435,
+        count: 0,
       },
       {
         type: "Pizza",
@@ -76,6 +79,7 @@ export default {
         img: "pizza2",
         hit: true,
         price: 405,
+        count: 0,
       },
       {
         type: "Pizza",
@@ -85,6 +89,7 @@ export default {
         img: "pizza3",
         hit: true,
         price: 395,
+        count: 0,
       },
       {
         type: "Pizza",
@@ -93,6 +98,7 @@ export default {
         img: "pizza4",
         hit: false,
         price: 415,
+        count: 0,
       },
       {
         type: "Pizza",
@@ -102,6 +108,7 @@ export default {
         img: "pizza5",
         hit: false,
         price: 425,
+        count: 0,
       },
       {
         type: "Pizza",
@@ -111,6 +118,7 @@ export default {
         img: "pizza6",
         hit: false,
         price: 245,
+        count: 0,
       },
       {
         type: "Pizza",
@@ -120,6 +128,7 @@ export default {
         img: "pizza7",
         hit: false,
         price: 445,
+        count: 0,
       },
       {
         type: "Pizza",
@@ -129,6 +138,7 @@ export default {
         img: "pizza8",
         hit: true,
         price: 455,
+        count: 0,
       },
       {
         type: "Sushi",
@@ -138,6 +148,7 @@ export default {
         img: "Sushi1",
         hit: true,
         price: 945,
+        count: 0,
       },
       {
         type: "Sushi",
@@ -147,6 +158,7 @@ export default {
         img: "Sushi2",
         hit: false,
         price: 925,
+        count: 0,
       },
       {
         type: "Sushi",
@@ -156,6 +168,7 @@ export default {
         img: "Sushi3",
         hit: true,
         price: 1015,
+        count: 0,
       },
       {
         type: "Sushi",
@@ -165,6 +178,7 @@ export default {
         img: "Sushi4",
         hit: false,
         price: 855,
+        count: 0,
       },
       {
         type: "Salad",
@@ -174,6 +188,7 @@ export default {
         img: "Salad1",
         hit: true,
         price: 155,
+        count: 0,
       },
       {
         type: "Salad",
@@ -183,6 +198,7 @@ export default {
         img: "Salad2",
         hit: false,
         price: 125,
+        count: 0,
       },
       {
         type: "Salad",
@@ -192,6 +208,7 @@ export default {
         img: "Salad3",
         hit: false,
         price: 135,
+        count: 0,
       },
       {
         type: "Salad",
@@ -201,6 +218,7 @@ export default {
         img: "Salad4",
         hit: false,
         price: 75,
+        count: 0,
       },
       {
         type: "Dessert",
@@ -209,6 +227,7 @@ export default {
         img: "Dessert1",
         hit: false,
         price: 65,
+        count: 0,
       },
       {
         type: "Dessert",
@@ -217,6 +236,7 @@ export default {
         img: "Dessert2",
         hit: false,
         price: 75,
+        count: 0,
       },
       {
         type: "Dessert",
@@ -225,6 +245,7 @@ export default {
         img: "Dessert3",
         hit: false,
         price: 85,
+        count: 0,
       },
       {
         type: "Dessert",
@@ -233,6 +254,7 @@ export default {
         img: "Dessert4",
         hit: false,
         price: 95,
+        count: 0,
       },
       {
         type: "Drinks",
@@ -241,6 +263,7 @@ export default {
         img: "Drinks1",
         hit: false,
         price: 105,
+        count: 0,
       },
       {
         type: "Drinks",
@@ -249,6 +272,7 @@ export default {
         img: "Drinks2",
         hit: false,
         price: 150,
+        count: 0,
       },
       {
         type: "Drinks",
@@ -257,6 +281,7 @@ export default {
         img: "Drinks3",
         hit: false,
         price: 150,
+        count: 0,
       },
       {
         type: "Drinks",
@@ -265,9 +290,10 @@ export default {
         img: "Drinks4",
         hit: false,
         price: 150,
+        count: 0,
       },
     ],
-    selectedProducts: [],
+    // selectedProducts: [],
     activeCategory: "Pizza",
   }),
   computed: {
@@ -276,34 +302,49 @@ export default {
         (product) => product.type === this.activeCategory
       );
     },
+    selectedProducts() {
+      return this.products.filter((product) => product.count >= 1);
+    },
     summPrice() {
       let summ = 0;
-      this.selectedProducts.forEach((product) => {
-        summ = summ + product.price;
+      this.products.forEach((product) => {
+        summ = summ + product.price * product.count;
       });
       return summ;
     },
   },
   methods: {
-    deleteItem(title) {
-      console.log(title);
-      this.selectedProducts.forEach((product, i) => {
-        if (product.title === title) {
-          this.selectedProducts.splice(i, 1);
-          console.log(i);
+    minusCount(title) {
+      this.products.forEach((item) => {
+        if (item.title === title) {
+          item.count = item.count - 1;
         }
       });
-      // this.selectedProducts.splice(index, 1);
+    },
+    plusCount(title) {
+      this.products.forEach((item) => {
+        if (item.title === title) {
+          item.count = item.count + 1;
+        }
+      });
+    },
+    deleteItem(title) {
+      this.products.forEach((item) => {
+        if (item.title === title) {
+          item.count = 0;
+        }
+      });
     },
     cartOpen() {
       this.isCartVisible = true;
       this.cardVisible = true;
     },
     addCart(title, price) {
-      this.selectedProducts.push({
-        title: title,
-        price: price,
-        id: Math.random().toString(),
+      console.log(title, price);
+      this.products.forEach((item) => {
+        if (item.title === title) {
+          item.count = item.count + 1;
+        }
       });
     },
     cartClose() {

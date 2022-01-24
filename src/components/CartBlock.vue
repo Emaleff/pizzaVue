@@ -13,6 +13,8 @@
           :product="product"
           :key="product.id"
           @deleteItem="deleteItem"
+          @minusCount="minusCount"
+          @plusCount="plusCount"
         />
       </div>
       <div class="cart__summ">
@@ -51,6 +53,12 @@ export default {
     cartClose() {
       this.$emit("cartClose");
     },
+    minusCount(title) {
+      this.$emit("minusCount", title);
+    },
+    plusCount(title) {
+      this.$emit("plusCount", title);
+    },
     deleteItem(title) {
       this.$emit("deleteItem", title);
     },
@@ -63,6 +71,7 @@ export default {
   transition: 1s;
   width: 0;
   z-index: -100;
+  overflow: scroll;
 }
 .wrapper.isCartVisible {
   display: block;
@@ -97,11 +106,11 @@ export default {
 }
 .cart__items {
   padding: 30px;
-  overflow-y: scroll;
+  overflow: auto;
 }
 .cart__item {
-  margin: 10px;
-  width: 100%;
+  margin: 10px auto;
+  width: 95%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -137,7 +146,12 @@ export default {
   align-items: center;
 }
 @media screen and (max-width: 980px) {
-  .cart__form{
+  .cart__form {
+    flex-direction: column;
+  }
+}
+@media screen and (max-width: 500px) {
+  .cart__item {
     flex-direction: column;
   }
 }
