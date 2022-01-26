@@ -8,7 +8,11 @@
 <script>
 export default {
   name: "Button",
-  props: ["btnText"],
+  props: {
+    btnText:{
+      type: String, required: true
+    }
+  },
 };
 </script>
 

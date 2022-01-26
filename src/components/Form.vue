@@ -5,10 +5,9 @@
         Fill out the form and we will call you
       </div>
       <form class="form">
- 
-        <Input :inputPlaceholder="inputNamePlaceholder" />
-        <Input :inputPlaceholder="inputNumberPlaceholder" />
-        <Button :btnText="btnText" />
+        <Input :inputPlaceholder="'Your name'" />
+        <Input :inputPlaceholder="'Phone number'" />
+        <Button :btnText="'Call back'" />
       </form>
       <img src="../assets/car.png" class="form-block__car" alt="" />
     </div>
@@ -24,13 +23,6 @@ import { KinesisContainer, KinesisElement } from "vue-kinesis";
 import Input from "./Input.vue";
 import Button from "./Button.vue";
 export default {
-  data() {
-    return {
-      inputNamePlaceholder: "Your name",
-      inputNumberPlaceholder: "Phone number",
-      btnText: "Call back"
-    };
-  },
   name: "Form",
   components: {
     KinesisContainer,
@@ -57,6 +49,7 @@ export default {
   width: 100%;
   height: 100%;
   background-image: url("../assets/bgForm.png");
+  background-size: cover;
   z-index: -1;
 }
 .form-block__container {

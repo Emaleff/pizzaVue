@@ -7,25 +7,28 @@
           <img src="../assets/close.svg" alt="" />
         </div>
       </div>
-      <div class="cart__items">
-        <CartItem
-          v-for="product in selectedProducts"
-          :product="product"
-          :key="product.id"
-          @deleteItem="deleteItem"
-          @minusCount="minusCount"
-          @plusCount="plusCount"
-        />
+      <div v-if="changeContent">
+        <div class="cart__items">
+          <CartItem
+            v-for="product in selectedProducts"
+            :product="product"
+            :key="product.id"
+            @deleteItem="deleteItem"
+            @minusCount="minusCount"
+            @plusCount="plusCount"
+          />
+        </div>
+        <div class="cart__summ">
+          <span class="summ__text"> ИТОГО : </span>
+          <span class="summ__value">{{ summPrice }} rub</span>
+        </div>
+        <form class="cart__form">
+          <Input :inputPlaceholder="inputNamePlaceholder" />
+          <Input :inputPlaceholder="inputNumberPlaceholder" />
+          <Button :btnText="btnText" />
+        </form>
       </div>
-      <div class="cart__summ">
-        <span class="summ__text"> ИТОГО : </span>
-        <span class="summ__value">{{ summPrice }} rub</span>
-      </div>
-      <form class="cart__form">
-        <Input :inputPlaceholder="inputNamePlaceholder" />
-        <Input :inputPlaceholder="inputNumberPlaceholder" />
-        <Button :btnText="btnText" />
-      </form>
+      <h2 v-else class="title">Вы ничего не добавили в корзину...</h2>
     </div>
   </div>
 </template>
@@ -43,11 +46,33 @@ export default {
     };
   },
   name: "CartBlock",
-  props: ["isCartVisible", "selectedProducts", "summPrice"],
+  props: {
+    isCartVisible: {
+      type: Boolean,
+      required: true,
+    },
+    selectedProducts: {
+      type: Array,
+      required: true,
+    },
+    summPrice: {
+      type: Number,
+      required: true,
+    },
+  },
   components: {
     Input,
     Button,
     CartItem,
+  },
+  computed: {
+    changeContent() {
+      if (this.selectedProducts.length > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    },
   },
   methods: {
     cartClose() {
@@ -67,14 +92,14 @@ export default {
 </script>
 
 <style scoped>
+.title {
+  margin-top: 50px;
+  text-align: center;
+}
 .wrapper {
   transition: 1s;
   width: 0;
-  z-index: -100;
   overflow: scroll;
-}
-.wrapper.isCartVisible {
-  display: block;
   position: fixed;
   width: 100%;
   height: 100%;
@@ -82,6 +107,10 @@ export default {
   left: 0;
   background: #f0f5fb;
   z-index: 99;
+  display: none;
+}
+.wrapper.isCartVisible {
+  display: block;
 }
 .cart__header {
   padding: 20px 0;

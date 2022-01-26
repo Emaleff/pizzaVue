@@ -8,7 +8,7 @@
           <img
             src="../assets/minus.svg"
             class="item__img"
-            :class="{ disabled: disabled }"
+            :class="{ disabled: onChangeDisabled }"
             alt=""
             @click="minusCount(product.title, product.count)"
           />
@@ -50,7 +50,21 @@ export default {
     };
   },
   name: "CartItem",
-  props: ["product"],
+  props: {
+    product: {
+      type: Object,
+      required: true,
+    },
+  },
+  computed: {
+    onChangeDisabled() {
+      if (this.product.count === 1) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+  },
   methods: {
     deleteItem(title) {
       this.$emit("deleteItem", title);
@@ -58,7 +72,6 @@ export default {
     minusCount(title, count) {
       if (count === 1) {
         this.disabled = true;
-        console.log("disa");
       } else {
         this.$emit("minusCount", title);
       }
@@ -102,10 +115,15 @@ export default {
   cursor: pointer;
   transform: scale(1.3);
 }
+.item__Allcost,
+.item__count {
+  width: 80px;
+}
 .item__cost {
   margin-left: auto;
   margin-right: 20px;
   margin-left: 20px;
+  width: 105px;
 }
 .item__delete {
   height: 25px;

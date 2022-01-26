@@ -10,7 +10,12 @@
 <script>
 export default {
   name: "CartIcon",
-  props: ["summPrice"],
+  props: {
+    summPrice: {
+      type: Number,
+      required: true,
+    },
+  },
   methods: {
     cartOpen() {
       this.$emit("cartOpen");

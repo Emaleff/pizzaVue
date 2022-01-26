@@ -1,7 +1,11 @@
 <template>
   <div class="container content__container">
     <div class="wrapp-cart">
-      <Cart-icon class="cart-icon" :summPrice="summPrice" @cartOpen="cartOpen" />
+      <Cart-icon
+        class="cart-icon"
+        :summPrice="summPrice"
+        @cartOpen="cartOpen"
+      />
     </div>
     <h2 class="content__title">Popular dishes</h2>
     <ul class="tabs-container">
@@ -10,7 +14,7 @@
         :key="index"
         class="tab"
         :class="{ active: tab.condition }"
-        @click="changeTab(tab.name)"
+        @click="onChangeTab(tab.name)"
       >
         {{ tab.name }}
       </li>
@@ -34,14 +38,59 @@
 import Product from "./Product.vue";
 import CartIcon from "./CartIcon.vue";
 export default {
+  data() {
+    return {
+      tabs: [
+        {
+          name: "Pizza",
+          condition: true,
+        },
+        {
+          name: "Sushi",
+          condition: false,
+        },
+        {
+          name: "Salad",
+          condition: false,
+        },
+        {
+          name: "Dessert",
+          condition: false,
+        },
+        {
+          name: "Drinks",
+          condition: false,
+        },
+      ],
+    };
+  },
   name: "Products",
-  props: ["tabs", "activeProducts", "summPrice"],
+  props: {
+    activeProducts: {
+      type: Array,
+      required: true,
+    },
+    summPrice: {
+      type: Number,
+      default: 0,
+      required: false,
+    },
+  },
   components: { Product, CartIcon },
   methods: {
-    changeTab(index) {
-      console.log(index);
-      this.$emit("changeActiveTab", index);
+    onChangeTab(e) {
+      this.tabs.forEach((tab) => {
+        if (tab.name === e) {
+          tab.condition = true;
+
+          this.activeCategory = e;
+        } else {
+          tab.condition = false;
+        }
+      });
+      this.$emit("changeActiveTab", e);
     },
+
     addCart(title, price) {
       this.$emit("addCart", title, price);
     },

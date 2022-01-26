@@ -24,7 +24,12 @@
 <script>
 export default {
   name: "Product",
-  props: ["product"],
+  props: {
+    product: {
+      type: Object,
+      required: true,
+    },
+  },
   methods: {
     addCart(title, price) {
       this.$emit("addCart", title, price);

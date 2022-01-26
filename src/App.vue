@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <CartBlock
-      v-if="cardVisible"
       :isCartVisible="isCartVisible"
       :selectedProducts="selectedProducts"
       :summPrice="summPrice"
@@ -13,9 +12,8 @@
     <Main />
     <Products
       :summPrice="summPrice"
-      :tabs="tabs"
       :activeProducts="activeProducts"
-      @changeActiveTab="onChangeTab"
+      @changeActiveTab="onChangeActiveProduct"
       @addCart="addCart"
       @cartOpen="cartOpen"
     />
@@ -37,29 +35,6 @@ export default {
   name: "App",
   data: () => ({
     isCartVisible: false,
-    cardVisible: false,
-    tabs: [
-      {
-        name: "Pizza",
-        condition: true,
-      },
-      {
-        name: "Sushi",
-        condition: false,
-      },
-      {
-        name: "Salad",
-        condition: false,
-      },
-      {
-        name: "Dessert",
-        condition: false,
-      },
-      {
-        name: "Drinks",
-        condition: false,
-      },
-    ],
     products: [
       {
         type: "Pizza",
@@ -293,7 +268,6 @@ export default {
         count: 0,
       },
     ],
-    // selectedProducts: [],
     activeCategory: "Pizza",
   }),
   computed: {
@@ -314,6 +288,9 @@ export default {
     },
   },
   methods: {
+    onChangeActiveProduct(type) {
+      this.activeCategory = type;
+    },
     minusCount(title) {
       this.products.forEach((item) => {
         if (item.title === title) {
@@ -337,10 +314,8 @@ export default {
     },
     cartOpen() {
       this.isCartVisible = true;
-      this.cardVisible = true;
     },
-    addCart(title, price) {
-      console.log(title, price);
+    addCart(title) {
       this.products.forEach((item) => {
         if (item.title === title) {
           item.count = item.count + 1;
@@ -349,20 +324,6 @@ export default {
     },
     cartClose() {
       this.isCartVisible = false;
-      setTimeout(() => {
-        this.cardVisible = false;
-      }, 300);
-    },
-    onChangeTab(e) {
-      this.tabs.forEach((tab) => {
-        if (tab.name === e) {
-          tab.condition = true;
-
-          this.activeCategory = e;
-        } else {
-          tab.condition = false;
-        }
-      });
     },
   },
   components: {

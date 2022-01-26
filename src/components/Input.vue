@@ -10,7 +10,13 @@
 <script>
 export default {
   name: "Input",
-  props: ["inputPlaceholder"],
+  props: {
+    inputPlaceholder: {
+      type: String,
+      default: "",
+      required: false,
+    },
+  },
 };
 </script>
 

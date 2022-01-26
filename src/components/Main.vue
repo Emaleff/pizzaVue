@@ -59,6 +59,7 @@ export default {
   top: 0;
   left: 0;
   background: url("../assets/bg.png");
+  background-size: cover;
   z-index: -2;
 }
 .mainImg1 {
